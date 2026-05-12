@@ -18,7 +18,7 @@ Audit date: 2026-05-12.
 - MCP has default deny, allowlist, permissions, and trace metadata.
 - Streaming and structured output are capabilities and are not simulated by the Fake/Test adapter.
 - README, docs, examples, and tests exist.
-- License remains pending and is not invented.
+- The project declares the MIT License in `LICENSE`, `README.md`, and package metadata.
 
 ## Local Validation Results
 
@@ -35,7 +35,4 @@ Audit date: 2026-05-12.
 
 ## Remaining Release Gate
 
-Do not declare a mature public release until:
-
-- license is defined if a public release requires it.
-- remote GitHub publication is explicitly authorized, if desired.
+Remote GitHub publication must be explicitly authorized and must use `github-mcp`.

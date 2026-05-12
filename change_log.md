@@ -130,19 +130,18 @@ Essa alteração deve indicar:
 
 ---
 
-### 4.5 Licença é decisão pendente
+### 4.5 Licença definida
 
-A licença do Capybara AI ainda não está definida.
+A licença do Capybara AI foi definida como MIT em 2026-05-12.
 
-O implementador não deve inventar licença.
+O implementador não deve alterar a licença sem decisão explícita e registro neste arquivo.
 
-Antes de release pública madura, a licença deve ser definida e registrada neste arquivo.
+Antes de release pública madura, a licença deve estar refletida em:
 
-Se a licença não estiver definida:
-
-- README não deve afirmar licença inexistente;
-- `docs/` não devem afirmar licença inexistente;
-- publicação pública madura deve ser bloqueada ou marcada como pendente, conforme decisão do projeto.
+- `LICENSE`;
+- `README.md`;
+- `docs/`;
+- metadata de pacote quando aplicável.
 
 ---
 
@@ -643,7 +642,7 @@ Adapters reais adicionais exigem consulta oficial atual, dependências opcionais
 | Etapa de retorno | Fases 11, 15 e 16 |
 | Arquivos impactados | Código, testes, docs, Git local |
 | Impacto na V1 | Alto |
-| Decisão | Considerar validação local técnica aprovada, mantendo licença como pendência de release pública madura. |
+| Decisão | Considerar validação local técnica aprovada. Licença ainda não havia sido definida nesta validação e foi resolvida posteriormente pela Mudança 032. |
 | Status | Incorporada |
 
 ### Resultados
@@ -657,11 +656,36 @@ Adapters reais adicionais exigem consulta oficial atual, dependências opcionais
 - `ruff format --check .`: aprovado.
 - `mypy src`: aprovado, sem issues em 52 arquivos.
 
-### Pendências
+### Pendências na data da validação
 
-- Licença permanece pendente.
-- Release pública madura continua bloqueada até definição de licença.
 - Operações remotas GitHub não foram executadas; se autorizadas, devem usar `github-mcp`.
+
+---
+
+## Mudança 032 — Licença MIT definida
+
+| Campo | Valor |
+|---|---|
+| Origem | Usuário |
+| Tipo | Normativa / operacional / licença |
+| Descrição | A licença do Capybara AI foi definida como MIT. |
+| Etapa de retorno | Fase 13, Fase 14, Fase 15 e Fase 16 |
+| Arquivos impactados | `LICENSE`, `README.md`, `docs/`, `pyproject.toml`, `change_log.md`, `docs/audit.md` |
+| Impacto na V1 | Alto |
+| Decisão | Criar `LICENSE` com a licença MIT e refletir a decisão na documentação e metadata do pacote. |
+| Status | Incorporada |
+
+### Resultado
+
+- `LICENSE` criado com a licença MIT.
+- `README.md` atualizado para declarar MIT.
+- `docs/` atualizado para remover bloqueio atual de licença.
+- `pyproject.toml` atualizado com `license = "MIT"` e classificador MIT.
+- `docs/audit.md` atualizado para registrar a validação de licença.
+
+### Regra preservada
+
+GitHub deve continuar usando `github-mcp` quando autorizado. O conector `mcp__codex_apps__github` continua proibido.
 
 ---
 
@@ -677,7 +701,7 @@ Este `change_log.md` incorpora:
 - alteração do formato de entrega;
 - decisão de Python 3.11+;
 - decisão de ferramentas dev base;
-- pendência de licença.
+- licença MIT definida.
 
 O arquivo físico desta entrega é:
 

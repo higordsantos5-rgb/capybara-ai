@@ -13,5 +13,4 @@ Start with:
 - `mcp.md`
 - `testing.md`
 
-License is pending and must not be assumed.
-
+Capybara AI is licensed under the MIT License.

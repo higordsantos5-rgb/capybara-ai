@@ -143,6 +143,4 @@ See `examples/` for:
 
 ## License
 
-License is pending. This project does not currently declare a public release
-license.
-
+Capybara AI is licensed under the MIT License. See `LICENSE`.
