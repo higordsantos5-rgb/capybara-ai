@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import capybara_ai
 from capybara_ai.agents import Agent, AgentConfig
 from capybara_ai.capabilities import create_default_registry
 from capybara_ai.config import ModelConfig, ProjectConfig, ProviderConfig, SecretRef
@@ -26,6 +27,10 @@ def test_fake_agent_runs_without_api_key():
     assert result.output == "fake: hello"
     assert result.metadata.provider_selected == "fake"
     assert result.metadata.model_selected == "fake-text"
+
+
+def test_package_version_is_exposed():
+    assert capybara_ai.__version__ == "0.1.0"
 
 
 def test_supported_provider_not_configured_cannot_be_used():

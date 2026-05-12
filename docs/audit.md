@@ -33,6 +33,15 @@ Audit date: 2026-05-12.
 - Git repository was initialized locally.
 - GitHub remote operations were not requested or authorized in this run. If used later, they must use `github-mcp`.
 
+## Packaging Validation
+
+- `python -m pip install --upgrade build twine` completed.
+- `python -m build` produced wheel and sdist for version `0.1.0`.
+- `python -m twine check dist/*` passed for both artifacts.
+- Clean environment install from `dist/capybara_ai-0.1.0-py3-none-any.whl` succeeded.
+- `import capybara_ai; print(capybara_ai.__version__)` returned `0.1.0`.
+
 ## Remaining Release Gate
 
 Remote GitHub publication must be explicitly authorized and must use `github-mcp`.
+TestPyPI must be used before real PyPI. Real PyPI publication requires explicit authorization.

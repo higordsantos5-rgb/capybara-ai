@@ -716,6 +716,59 @@ O push direto por Git preservaria o histórico local, mas foi bloqueado pela pol
 
 ---
 
+## Mudança 034 — Ajuste de metadata de licença para build Python
+
+| Campo | Valor |
+|---|---|
+| Origem | Implementador |
+| Tipo | Operacional / empacotamento |
+| Descrição | O build com setuptools atual rejeitou o classificador `License :: OSI Approved :: MIT License` quando `license = "MIT"` já estava definido. |
+| Etapa de retorno | Preparação de publicação Python |
+| Arquivos impactados | `pyproject.toml`, `change_log.md` |
+| Impacto na V1 | Baixo |
+| Decisão | Remover o classificador de licença e manter a expressão `license = "MIT"`, alinhada ao comportamento atual do setuptools/PEP 639. |
+| Status | Incorporada |
+
+### Resultado
+
+O metadata de licença permanece MIT e o empacotamento passa a usar a forma aceita pelo backend de build atual.
+
+---
+
+## Mudança 035 — Checklist local de empacotamento Python
+
+| Campo | Valor |
+|---|---|
+| Origem | Implementador |
+| Tipo | Operacional / empacotamento / publicação |
+| Descrição | O checklist local de preparação para publicação Python foi executado sem publicar no PyPI real. |
+| Etapa de retorno | Preparação de publicação Python |
+| Arquivos impactados | `pyproject.toml`, `src/capybara_ai/__init__.py`, `tests/test_core_flow.py`, `dist/` local não versionado |
+| Impacto na V1 | Alto |
+| Decisão | Preparar artefatos locais para TestPyPI/PyPI sem upload real até autorização explícita e GitHub completo. |
+| Status | Incorporada |
+
+### Resultados
+
+- `pytest`: `13 passed`.
+- `ruff check .`: aprovado.
+- `ruff format --check .`: aprovado.
+- `mypy src`: aprovado, sem issues em 52 arquivos.
+- `python -m pip install --upgrade build twine`: concluído.
+- `python -m build`: gerou `capybara_ai-0.1.0.tar.gz` e `capybara_ai-0.1.0-py3-none-any.whl`.
+- `python -m twine check dist/*`: aprovado para wheel e sdist.
+- Instalação do wheel em ambiente limpo `test-capybara-install`: concluída.
+- `python -c "import capybara_ai; print(capybara_ai.__version__)"`: retornou `0.1.0`.
+
+### Pendências antes de publicação real
+
+- Concluir publicação integral do conteúdo no GitHub por caminho autorizado.
+- Preparar TestPyPI antes de PyPI real.
+- Preferir Trusted Publishing via GitHub Actions para PyPI real.
+- Não publicar no PyPI real sem autorização explícita.
+
+---
+
 ## 11. Status deste change log
 
 Este `change_log.md` incorpora:

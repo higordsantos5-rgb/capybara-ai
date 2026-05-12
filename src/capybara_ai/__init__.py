@@ -16,6 +16,8 @@ from capybara_ai.mcp.config import MCPClientConfig
 from capybara_ai.mcp.tools import MCPToolConfig
 from capybara_ai.routing.router import Router
 
+__version__ = "0.1.0"
+
 __all__ = [
     "AdapterStatus",
     "Agent",
@@ -36,5 +38,6 @@ __all__ = [
     "ProviderConfig",
     "ProviderName",
     "Router",
+    "__version__",
     "create_default_registry",
 ]
