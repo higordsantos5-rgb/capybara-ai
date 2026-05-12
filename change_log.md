@@ -689,26 +689,30 @@ GitHub deve continuar usando `github-mcp` quando autorizado. O conector `mcp__co
 
 ---
 
-## Mudança 033 — Publicação GitHub via `github-mcp`
+## Mudança 033 — Repositório GitHub criado via `github-mcp`
 
 | Campo | Valor |
 |---|---|
 | Origem | Usuário / Implementador |
 | Tipo | Operacional / GitHub / publicação |
-| Descrição | O repositório GitHub remoto foi criado e preparado para publicação usando exclusivamente `github-mcp`. |
+| Descrição | O repositório GitHub remoto foi criado usando exclusivamente `github-mcp`; o envio completo do conteúdo permanece pendente de uma forma autorizada que preserve as regras operacionais. |
 | Etapa de retorno | Fase 15 — Git, GitHub e versionamento |
 | Arquivos impactados | Repositório remoto GitHub, `change_log.md` |
 | Impacto na V1 | Alto |
-| Decisão | Publicar o projeto em `https://github.com/higordsantos5-rgb/capybara-ai` via `github-mcp`. |
+| Decisão | Criar o repositório em `https://github.com/higordsantos5-rgb/capybara-ai` via `github-mcp`. |
 | Status | Incorporada |
 
 ### Resultado
 
-- Repositório remoto criado: `higordsantos5-rgb/capybara-ai`.
+- Repositório remoto criado via `github-mcp`: `higordsantos5-rgb/capybara-ai`.
 - URL: `https://github.com/higordsantos5-rgb/capybara-ai`.
 - Ferramenta usada: `github-mcp`.
 - Conector proibido `mcp__codex_apps__github` não foi usado.
 - `.env` e `.venv/` permanecem protegidos por `.gitignore` e não devem ser publicados.
+
+### Pendência operacional
+
+O push direto por Git preservaria o histórico local, mas foi bloqueado pela política porque a publicação remota deve ocorrer via `github-mcp`. O envio integral de todos os arquivos ao remoto deve ser concluído apenas por caminho autorizado.
 
 ---
 
