@@ -866,6 +866,15 @@ Observações:
 - `.vercel/` foi adicionada ao `.gitignore`;
 - foi adicionado `package.json` mínimo na raiz apenas para detecção do Next.js pela Vercel, mantendo a aplicação real e dependências principais em `site/`.
 
+### Sincronização GitHub/Vercel
+
+Em 2026-05-12, após autorização explícita do usuário, o projeto Vercel `capybara-ai` foi conectado ao repositório GitHub `higordsantos5-rgb/capybara-ai`, com branch de produção `main`.
+
+Objetivo da conexão:
+
+- mudanças futuras em `README.md`, `docs/**/*.md` e `site/` enviadas para `main` devem acionar novo deploy automático na Vercel;
+- a publicação inicial continua registrada como deploy direto Vercel/CLI, e o GitHub passa a servir como automação futura de CI/CD.
+
 ---
 
 ## Mudança 038 — Final public README and documentation polish before PyPI release
