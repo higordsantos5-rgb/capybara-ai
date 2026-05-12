@@ -868,6 +868,30 @@ Observações:
 
 ---
 
+## Mudança 038 — Final public README and documentation polish before PyPI release
+
+| Campo | Valor |
+|---|---|
+| Origem | Usuário |
+| Tipo | Operacional / documental / DX / PyPI |
+| Descrição | README e documentação pública foram revisados para a publicação real no PyPI, reduzindo tom interno/normativo e melhorando orientação de produto para desenvolvedores. |
+| Etapa de retorno | Publicação PyPI / revisão pública |
+| Arquivos impactados | `README.md`, `docs/`, `change_log.md`, `docs/audit.md` |
+| Impacto na V1 | Médio |
+| Decisão | Usar instalação principal `pip install capybara-ai`, links absolutos para o site público de docs no README e separar conteúdo de auditoria da experiência de onboarding. |
+| Status | Incorporada |
+
+### Resultado
+
+- README reescrito como página pública profissional para PyPI.
+- Links da seção `Documentation` trocados para `https://capybara-ai-xi.vercel.app/docs/...`.
+- Mensagens de pré-lançamento removidas do README e das páginas públicas de instalação/quickstart.
+- Páginas públicas em `docs/` revisadas para priorizar uso real, exemplos e benefícios.
+- Conteúdo interno/auditável permaneceu separado em `docs/internal/` e `docs/audit.md`.
+- Specs normativas não foram alteradas.
+
+---
+
 ## 11. Status deste change log
 
 Este `change_log.md` incorpora:
