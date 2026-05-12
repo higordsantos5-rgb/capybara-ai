@@ -1,0 +1,55 @@
+"""Core provider-agnostic contracts."""
+
+from capybara_ai.core.errors import (
+    AdapterStatusError,
+    CapybaraAIError,
+    ConfigurationError,
+    DependencyPolicyError,
+    InvalidContextError,
+    MCPConfigurationError,
+    MCPExecutionError,
+    MCPPermissionError,
+    MissingCapabilityError,
+    MissingCredentialError,
+    ModelNotEnabledError,
+    NoEligibleModelError,
+    PipelineRequiredError,
+    ProviderExecutionError,
+    ProviderNotConfiguredError,
+    ProviderUnavailableError,
+    RoutingPolicyError,
+    SecretExposureError,
+    UnsupportedModalityError,
+)
+from capybara_ai.core.execution import ExecutionRequest, ExecutionResult
+from capybara_ai.core.metadata import ExecutionMetadata
+from capybara_ai.core.types import AdapterStatus, Capability, ContextType, ProviderName
+
+__all__ = [
+    "AdapterStatus",
+    "AdapterStatusError",
+    "Capability",
+    "CapybaraAIError",
+    "ConfigurationError",
+    "ContextType",
+    "DependencyPolicyError",
+    "ExecutionMetadata",
+    "ExecutionRequest",
+    "ExecutionResult",
+    "InvalidContextError",
+    "MCPConfigurationError",
+    "MCPExecutionError",
+    "MCPPermissionError",
+    "MissingCapabilityError",
+    "MissingCredentialError",
+    "ModelNotEnabledError",
+    "NoEligibleModelError",
+    "PipelineRequiredError",
+    "ProviderExecutionError",
+    "ProviderName",
+    "ProviderNotConfiguredError",
+    "ProviderUnavailableError",
+    "RoutingPolicyError",
+    "SecretExposureError",
+    "UnsupportedModalityError",
+]
