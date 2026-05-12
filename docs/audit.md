@@ -41,6 +41,20 @@ Audit date: 2026-05-12.
 - Clean environment install from `dist/capybara_ai-0.1.0-py3-none-any.whl` succeeded.
 - `import capybara_ai; print(capybara_ai.__version__)` returned `0.1.0`.
 
+## Public Documentation And DX
+
+- README was rewritten as public framework documentation focused on user value,
+  installation, quickstart, concepts, examples, and project status.
+- Public docs were reorganized into layered onboarding, guides, reference, and
+  internal documentation under `docs/`.
+- `docs/audit.md` remains an audit-oriented document and is not the primary
+  entry point for new users.
+- Core normative specs were not changed during this documentation polish; `change_log.md`
+  records the DX documentation change.
+- No-API-key examples were executed successfully for simple agent, capability
+  routing, multimodal blocking, MCP allowlisted/denied, and structured error
+  metadata.
+
 ## Remaining Release Gate
 
 Remote GitHub publication must be explicitly authorized and must use `github-mcp`.

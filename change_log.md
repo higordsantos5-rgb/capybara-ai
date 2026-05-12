@@ -769,6 +769,33 @@ O metadata de licença permanece MIT e o empacotamento passa a usar a forma acei
 
 ---
 
+## Mudança 036 — Public documentation and DX polish before GitHub publication
+
+| Campo | Valor |
+|---|---|
+| Origem | Usuário |
+| Tipo | Operacional / documental / DX |
+| Descrição | A documentação pública foi reescrita e reorganizada para ser mais clara, amigável e orientada ao usuário final antes da publicação GitHub completa. |
+| Etapa de retorno | Fase 13, Fase 14 e Fase 16 |
+| Arquivos impactados | `README.md`, `docs/`, `examples/`, `change_log.md`, `docs/audit.md` |
+| Impacto na V1 | Médio |
+| Decisão | Melhorar README, criar documentação pública em camadas e adicionar exemplos práticos sem alterar artefatos normativos internos. |
+| Status | Incorporada |
+
+### Resultado
+
+- README reescrito como vitrine pública do framework.
+- `docs/` reorganizado com camadas `getting-started/`, `guides/`, `reference/` e `internal/`.
+- Quickstart humano criado em `docs/getting-started/quickstart.md`.
+- Exemplos adicionados para roteamento por capabilities, bloqueio multimodal, MCP allowlisted/denied e erro estruturado.
+- `docs/audit.md` atualizado para registrar o polimento público/DX.
+
+### Regra preservada
+
+Os artefatos normativos internos `system_spec.md`, `technical_spec.md`, `implementation_plan.md`, `change_log.md`, `AGENTS.md` e `docs/audit.md` não tiveram suas regras normativas alteradas. O polimento mudou apresentação pública e onboarding.
+
+---
+
 ## 11. Status deste change log
 
 Este `change_log.md` incorpora:
