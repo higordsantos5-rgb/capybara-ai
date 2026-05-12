@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 
 import { DocsLayout } from "@/components/docs/docs-layout";
 import { MarkdownPage } from "@/components/docs/markdown-page";
-import { getAllDocSlugs, getDocBySlug, getDocsTree } from "@/lib/docs";
+import { SectionPage } from "@/components/docs/section-page";
+import { getAllDocSlugs, getDocEntryBySlug, getDocsTree } from "@/lib/docs";
 
 type PageProps = {
   params: Promise<{
@@ -18,28 +19,28 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const doc = await getDocBySlug(slug);
-  if (!doc) {
+  const entry = await getDocEntryBySlug(slug);
+  if (!entry) {
     return {};
   }
 
   return {
-    title: doc.title,
-    description: doc.excerpt
+    title: entry.title,
+    description: entry.excerpt
   };
 }
 
 export default async function DocPage({ params }: PageProps) {
   const { slug } = await params;
-  const [doc, tree] = await Promise.all([getDocBySlug(slug), getDocsTree()]);
+  const [entry, tree] = await Promise.all([getDocEntryBySlug(slug), getDocsTree()]);
 
-  if (!doc) {
+  if (!entry) {
     notFound();
   }
 
   return (
-    <DocsLayout tree={tree} currentPath={doc.route}>
-      <MarkdownPage doc={doc} />
+    <DocsLayout tree={tree} currentPath={entry.route}>
+      {entry.type === "page" ? <MarkdownPage doc={entry} /> : <SectionPage section={entry} />}
     </DocsLayout>
   );
 }
