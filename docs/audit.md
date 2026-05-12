@@ -55,6 +55,20 @@ Audit date: 2026-05-12.
   routing, multimodal blocking, MCP allowlisted/denied, and structured error
   metadata.
 
+## Final PyPI Documentation Polish
+
+- Final public README and documentation polish before PyPI release was completed.
+- README now uses absolute public documentation links for PyPI rendering:
+  `https://capybara-ai-xi.vercel.app/docs/...`.
+- README installation now presents `pip install capybara-ai` as the primary user
+  flow, with local editable installation separated as development-only.
+- Public onboarding pages were reviewed to reduce internal/audit language and
+  emphasize practical usage, provider configuration, capability routing,
+  multimodal context, MCP tools, and structured errors.
+- Internal and audit-oriented material remains separated under `docs/internal/`
+  and `docs/audit.md`.
+- Normative project specs were not changed during this final public docs polish.
+
 ## Remaining Release Gate
 
 Remote GitHub publication must be explicitly authorized and must use `github-mcp`.

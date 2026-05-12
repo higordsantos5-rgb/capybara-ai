@@ -1,6 +1,8 @@
 # Provider Configuration
 
-Provider configuration is explicit by design.
+Capybara AI keeps provider setup in project configuration so your application
+has one clear place for allowed providers, enabled models, credentials, adapter
+status policy, and fallback behavior.
 
 ```python
 from capybara_ai.config import ModelConfig, ProjectConfig, ProviderConfig, SecretRef
@@ -23,12 +25,11 @@ config = ProjectConfig(
 )
 ```
 
-Three things are separate:
+Three states are intentionally separate:
 
-- framework support for a provider;
-- project configuration that enables it;
-- runtime availability and credentials.
+- the framework has an adapter for a provider;
+- your project enables and configures that provider;
+- the provider is available at runtime with valid credentials.
 
-This prevents accidental usage of providers or models just because their adapter
-or model card exists.
-
+The same split applies to models. A model can be known in the capability
+registry without being enabled for your project.

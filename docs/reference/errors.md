@@ -1,6 +1,9 @@
 # Errors Reference
 
-Common structured errors:
+Capybara AI uses structured errors for configuration, routing, provider, context,
+and MCP failures.
+
+Common error families:
 
 - `ConfigurationError`
 - `MissingCredentialError`
@@ -16,5 +19,5 @@ Common structured errors:
 - `MCPExecutionError`
 - `PipelineRequiredError`
 
-Errors expose safe details and redact sensitive values.
-
+Structured errors expose stable codes and safe details. Sensitive values such as
+API keys, tokens, and secret environment values are redacted.

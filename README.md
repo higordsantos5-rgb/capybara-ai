@@ -3,30 +3,30 @@
 Build predictable AI agents with explicit model capabilities, safe provider routing,
 multimodal validation, and MCP tool permissions.
 
-Capybara AI is a small Python framework for teams who want AI integrations to be
-easy to reason about. Instead of scattering provider-specific SDK calls,
-capability checks, fallback rules, credentials, and tool permissions across an
-application, you describe what your project allows and let Capybara AI validate
-before anything external runs.
+Capybara AI helps Python developers build AI agents that know what each model can
+do before execution. Instead of scattering provider configuration, model
+assumptions, API keys, fallback behavior, and tool permissions across your
+application, Capybara AI centralizes those decisions in a small, explicit
+framework.
 
 ## Why Capybara AI?
 
-Direct SDK integrations are quick at first, but they often grow hidden assumptions:
+Most AI integrations start as a direct SDK call. That is useful for a prototype,
+but production code quickly needs answers to harder questions:
 
-- a model is used because its name was hardcoded, not because it was authorized;
-- image, PDF, audio, or video input reaches a model that cannot handle it;
-- fallback happens silently across providers;
-- API keys leak into logs or error payloads;
-- external tools run without a clear permission boundary.
+- Which models are allowed in this project?
+- Which provider can satisfy this request?
+- Does this model actually support image, PDF, streaming, or structured output?
+- Can this agent call an external tool, and with which permissions?
+- When something is rejected, can the application inspect a structured reason?
 
-Capybara AI gives those decisions names. Providers must be configured, models
-must be enabled, capabilities must be declared, and MCP tools are denied unless
-allowlisted.
+Capybara AI gives you a capability-first layer between your application and
+provider SDKs. You configure the providers and models your project permits, then
+the framework validates requests locally before calling anything external.
 
-## Install
+## Installation
 
-Capybara AI is preparing its first public package release. The intended user
-installation command is:
+Install Capybara AI from PyPI:
 
 ```bash
 pip install capybara-ai
@@ -39,7 +39,12 @@ pip install "capybara-ai[openai]"
 pip install "capybara-ai[mcp]"
 ```
 
-From source:
+Python 3.11+ is required.
+
+## Development Install
+
+Use a local editable install when contributing or running the repository from
+source:
 
 ```bash
 git clone https://github.com/higordsantos5-rgb/capybara-ai.git
@@ -48,8 +53,6 @@ python -m venv .venv
 # Activate .venv for your shell.
 pip install -e ".[dev]"
 ```
-
-Python 3.11+ is required.
 
 ## Quickstart
 
@@ -66,97 +69,116 @@ print(result.output)
 print(result.metadata.to_dict())
 ```
 
-Output is structured: you get the response plus metadata about the selected
-provider, model, required capabilities, and validation path.
-
-## Design Principles
-
-Capybara AI follows four principles:
-
-1. Explicit over implicit.
-2. Validate before execution.
-3. Capabilities are declared, never guessed.
-4. External tools are denied by default.
-
-These principles keep the framework predictable when you add real providers,
-multimodal context, streaming, structured output, or MCP tools.
+The result includes both the model output and structured metadata about provider
+selection, model selection, required capabilities, and validation decisions.
 
 ## Core Concepts
 
-`ProjectConfig` is the center of the application contract. It says which
-providers are enabled, which models are allowed, where credentials come from,
-which adapter statuses are acceptable, and whether fallback is allowed.
+- **Agents** define the task identity: name, instructions, preferred model
+  policy, accepted context types, and allowed tools.
+- **Providers** are adapter-backed integrations such as Fake/Test or OpenAI.
+  A provider adapter can exist without being active in your project.
+- **Capability Registry** describes what each known model can do. Capabilities
+  are declared, not guessed from model names.
+- **Routing** selects an eligible model from your configured providers and
+  enabled models.
+- **Multimodal Context** represents text, markdown, code, images, PDFs, audio,
+  video, files, MCP resources, and explicitly derived context.
+- **MCP Tools** are external tool calls governed by explicit server
+  configuration, allowlists, scopes, permissions, and trace metadata.
 
-`CapabilityRegistry` is the source of truth for what models can do. A known
-model is not automatically enabled. A supported provider is not automatically
-active.
+## Example: Your First Agent
 
-`AgentRunner` validates context, routes to an eligible model, checks MCP policy,
-and calls the selected adapter only after local checks pass.
+```python
+from capybara_ai.agents import Agent, AgentConfig
+from capybara_ai.testing import fake_runner
 
-## Providers And Adapter Status
+agent = Agent(
+    AgentConfig(
+        name="support_assistant",
+        instructions="Answer clearly and briefly.",
+    )
+)
 
-Adapters are honest about maturity:
+result = agent.run("What is capability-first routing?", fake_runner())
+
+print(result.output)
+print(result.metadata.provider_selected)
+print(result.metadata.model_selected)
+```
+
+## Providers
+
+Adapters declare their maturity so applications can choose an appropriate policy.
 
 | Provider | Status | Notes |
 |---|---|---|
 | Fake/Test | `mock` | Local adapter for tests, examples, and CI. |
 | OpenAI | `real` | Optional extra; requires a consumer-provided API key. |
-| Gemini | `experimental` | Declared placeholder in the base package. |
-| Anthropic | `experimental` | Declared placeholder in the base package. |
-| xAI | `contract` | Contract only; does not execute as real. |
-| DeepSeek | `contract` | Contract only; does not execute as real. |
-| Meta | `contract` | Contract only; does not execute as real. |
+| Gemini | `experimental` | Declared adapter surface with limited maturity. |
+| Anthropic | `experimental` | Declared adapter surface with limited maturity. |
+| xAI | `contract` | Contract only; not executed as a real adapter. |
+| DeepSeek | `contract` | Contract only; not executed as a real adapter. |
+| Meta | `contract` | Contract only; not executed as a real adapter. |
 
 API keys belong to the consuming project. Capybara AI does not create, embed, or
 log provider secrets.
 
 ## Capability-Based Routing
 
-Every request produces required capabilities. Text requires `text`; streaming
-requires `streaming`; structured output requires `structured_output`; image
-context requires `image`.
+Every request is mapped to required capabilities before routing. Text requires
+`text`; streaming requires `streaming`; structured output requires
+`structured_output`; image context requires `image`.
 
-The router selects only models that are:
-
-- known in the registry;
-- enabled by project config;
-- attached to an enabled and configured provider;
-- allowed by policy;
-- compatible with required capabilities;
-- available at runtime.
-
-Fallback is opt-in.
+The router considers only models that are known, enabled by project config,
+attached to an enabled provider, allowed by policy, compatible with the request,
+and available at runtime. Fallback between providers is opt-in.
 
 ## Multimodal Validation
 
-Multimodal input is treated as a real capability boundary. If a model does not
-declare native support for an input type, the request is blocked before provider
-execution unless the project configures an explicit, traceable pipeline.
+Capybara AI treats multimodal input as a capability boundary. If a request
+contains image, PDF, audio, or video context, the selected model must declare
+native support for that context type. Projects can also define explicit,
+traceable pipelines that transform context before routing.
 
-This makes image/PDF/audio/video handling visible instead of accidental.
+```python
+from capybara_ai.context import ContextItem
+from capybara_ai.core.types import ContextType
+
+image = ContextItem(type=ContextType.IMAGE, data=b"...", source="upload")
+```
+
+That context contributes an `image` capability requirement to the request.
 
 ## MCP Tools And Permissions
 
-MCP tools use default deny. A tool call needs:
+MCP integrations are configured as explicit tools with scopes and permissions.
+This keeps external reads, writes, edits, executions, and state mutations visible
+in application code and execution metadata.
 
-- MCP enabled;
-- configured server/connector;
-- allowlisted tool name;
-- declared scope;
-- declared permissions such as `read`, `write`, `edit`, or `execute`;
-- trace metadata.
+```python
+from capybara_ai.mcp import MCPPermissions, MCPToolConfig
 
-This allows useful integrations without turning tools into ambient authority.
+read_note = MCPToolConfig(
+    name="read_note",
+    server_name="local",
+    scope="notes",
+    permissions=MCPPermissions(read=True),
+    allowlisted=True,
+)
+```
+
+Tools that need stronger permissions declare them in configuration before they
+can be called.
 
 ## Examples
 
-See `examples/` for:
+The `examples/` directory includes:
 
 - a simple Fake/Test agent;
 - capability-based routing;
-- multimodal blocking;
-- MCP allowed and denied tools;
+- multimodal validation;
+- MCP allowed and denied tool calls;
 - provider/model configuration errors;
 - structured error metadata;
 - OpenAI configuration, streaming, and structured output examples.
@@ -165,25 +187,22 @@ See `examples/` for:
 
 Start here:
 
-- [Quickstart](docs/getting-started/quickstart.md)
-- [First Agent](docs/getting-started/first-agent.md)
-- [Provider Configuration](docs/getting-started/provider-configuration.md)
-- [MCP Tools](docs/getting-started/mcp-tools.md)
-- [Capability Routing](docs/guides/capability-routing.md)
-- [Multimodal Context](docs/guides/multimodal-context.md)
-- [Reference](docs/reference/configuration.md)
-
-Internal compliance and release checks live under `docs/internal/` and
-`docs/audit.md`.
+- [Quickstart](https://capybara-ai-xi.vercel.app/docs/getting-started/quickstart)
+- [First Agent](https://capybara-ai-xi.vercel.app/docs/getting-started/first-agent)
+- [Provider Configuration](https://capybara-ai-xi.vercel.app/docs/getting-started/provider-configuration)
+- [MCP Tools](https://capybara-ai-xi.vercel.app/docs/getting-started/mcp-tools)
+- [Capability Routing](https://capybara-ai-xi.vercel.app/docs/guides/capability-routing)
+- [Multimodal Context](https://capybara-ai-xi.vercel.app/docs/guides/multimodal-context)
+- [Reference](https://capybara-ai-xi.vercel.app/docs/reference/configuration)
 
 ## Project Status
 
-Capybara AI V1 is implemented and locally validated. The package is preparing
-its first public package release. The intended installation command is
-`pip install capybara-ai`.
+Capybara AI is in its first public V1 release.
 
-Real PyPI publication will use an explicit release checklist and should prefer
-Trusted Publishing via GitHub Actions.
+The core architecture is stable enough for experimentation, learning, and early
+integrations. Provider adapters may have different maturity levels (`real`,
+`experimental`, `contract`, or `mock`) depending on the provider API and
+available tests.
 
 ## License
 

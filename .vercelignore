@@ -1,0 +1,12 @@
+*
+!README.md
+!LICENSE
+!package.json
+!vercel.json
+!docs
+!docs/**
+!site
+!site/**
+site/node_modules/
+site/.next/
+site/out/

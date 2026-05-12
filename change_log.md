@@ -796,6 +796,78 @@ Os artefatos normativos internos `system_spec.md`, `technical_spec.md`, `impleme
 
 ---
 
+## Mudança 037 — Site público de documentação com deploy Vercel
+
+| Campo | Valor |
+|---|---|
+| Origem | Usuário |
+| Tipo | Operacional / documental / deploy |
+| Descrição | Foi adicionada uma camada web separada em `site/` para publicar README e `docs/**/*.md` como site público de documentação. |
+| Etapa de retorno | Documentação pública e publicação |
+| Arquivos impactados | `site/`, `vercel.json`, `.vercelignore`, `.gitignore`, `change_log.md` |
+| Impacto na V1 | Baixo no pacote Python; alto para documentação pública |
+| Decisão | Usar Next.js + TypeScript + App Router como camada web isolada, mantendo o pacote Python preservado. Deploy deve ocorrer via Vercel MCP, sem GitHub como requisito desta tarefa. |
+| Status | Incorporada |
+
+### Justificativa
+
+O site precisa transformar `README.md` e `docs/**/*.md` em rotas públicas, com landing page, navegação, conversão de links Markdown e deploy direto na Vercel. A camada web foi isolada em `site/` para não misturar empacotamento Python com frontend.
+
+### Dependências web adicionadas
+
+- `next`, `react`, `react-dom`;
+- `react-markdown`, `remark-gfm`;
+- `typescript`, `eslint`, `eslint-config-next` e tipos React/Node para desenvolvimento.
+
+### Alternativas consideradas
+
+- Site estático manual: rejeitado porque dificultaria rotas automáticas e manutenção a partir de `docs/**/*.md`.
+- GitHub Pages ou deploy por GitHub: rejeitado nesta tarefa porque o requisito é deploy direto via Vercel MCP sem GitHub obrigatório.
+
+### Regras preservadas
+
+- O pacote Python e sua API não foram alterados.
+- `README.md` e `docs/**/*.md` continuam como fonte de conteúdo.
+- `.env`, `.venv/`, `node_modules/` e `.next/` continuam ignorados.
+- `.vercelignore` limita o upload Vercel a `site/`, `README.md`, `docs/`, `LICENSE`, `package.json` e `vercel.json`.
+- O status do pacote permanece honesto: V1 validada localmente e release PyPI em preparação.
+- GitHub não é requisito desta tarefa e o conector proibido `mcp__codex_apps__github` não foi usado.
+
+### Bloqueio de deploy
+
+Em 2026-05-12, a primeira tentativa de deploy via Vercel MCP foi recusada por risco de publicar conteúdo amplo do workspace. Após adicionar `.vercelignore` com allowlist de arquivos públicos, nova tentativa via Vercel MCP não publicou o projeto e retornou instrução para usar `vercel deploy` pela CLI ou integração Git.
+
+Como a tarefa exige deploy exclusivamente via Vercel MCP e não GitHub como requisito, a publicação fica bloqueada até autorização para um caminho alternativo ou disponibilidade de deploy direto no conector.
+
+### Publicação final autorizada
+
+Em 2026-05-12, o usuário autorizou explicitamente o caminho alternativo indicado pelo próprio conector Vercel: `vercel deploy` via Vercel CLI.
+
+Execução realizada:
+
+- `npx vercel link --yes --project capybara-ai`;
+- `npx vercel deploy --prod --yes`.
+
+Resultado:
+
+- projeto Vercel criado/vinculado: `capybara-ai`;
+- deployment final em estado `Ready`;
+- URL pública final: `https://capybara-ai-xi.vercel.app`;
+- build remoto executou `cd site && npm install` e `cd site && npm run build`;
+- build remoto gerou 35 páginas estáticas;
+- `npm audit` remoto reportou `found 0 vulnerabilities`;
+- rotas públicas verificadas por HTTP com status `200`: `/`, `/docs`, `/docs/installation`, `/docs/getting-started/quickstart`, `/docs/guides/capability-routing`, `/docs/reference/errors`, `/docs/internal/release-audit`.
+
+Observações:
+
+- o deploy final não dependeu de GitHub;
+- a Vercel CLI tentou detectar/conectar automaticamente o repositório GitHub durante o link inicial, mas essa conexão falhou e não foi usada como requisito de publicação;
+- nenhum token Vercel foi salvo no repositório;
+- `.vercel/` foi adicionada ao `.gitignore`;
+- foi adicionado `package.json` mínimo na raiz apenas para detecção do Next.js pela Vercel, mantendo a aplicação real e dependências principais em `site/`.
+
+---
+
 ## 11. Status deste change log
 
 Este `change_log.md` incorpora:

@@ -1,13 +1,15 @@
 # Provider Adapters
 
-Adapters isolate provider SDKs from the core framework.
+Provider adapters isolate external SDKs from the provider-agnostic core. Your
+application configures which adapters are usable in a given project.
 
-Adapter status values:
+Adapter status communicates maturity:
 
-- `real`: runtime implementation exists and has contract tests/docs.
-- `experimental`: shape exists, runtime maturity is limited.
-- `contract`: interface exists but cannot execute as a real provider.
-- `mock`: local/test adapter.
+- `mock`: local adapter for tests and examples;
+- `real`: backed by an implemented provider integration;
+- `experimental`: available surface with limited maturity;
+- `contract`: declared interface that should not execute as a real provider.
 
-SDK imports belong inside adapters. The core stays provider-agnostic.
-
+Use adapter status in project policy to match your risk tolerance. For example,
+tests can rely on Fake/Test, internal experiments can allow experimental
+adapters, and production code can restrict routing to real adapters.

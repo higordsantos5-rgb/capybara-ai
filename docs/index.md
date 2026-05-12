@@ -1,12 +1,12 @@
 # Capybara AI Documentation
 
-Welcome to the public documentation for Capybara AI.
+Capybara AI is a capability-first Python framework for building predictable AI
+agents across providers, model capabilities, multimodal context, and MCP tools.
 
-Capybara AI helps Python developers build predictable AI agents by making model
-capabilities, provider routing, multimodal context, and MCP tool permissions
-explicit.
+Use these docs to move from a local Fake/Test agent to configured providers,
+capability-based routing, structured errors, and explicit tool permissions.
 
-## Getting Started
+## Start Here
 
 - [Quickstart](getting-started/quickstart.md)
 - [First Agent](getting-started/first-agent.md)
@@ -29,7 +29,10 @@ explicit.
 - [MCP](reference/mcp.md)
 - [Errors](reference/errors.md)
 
-## Internal And Release Notes
+## Internal Notes
+
+Release checks, architecture constraints, and compliance notes are kept separate
+from the user guides:
 
 - [Architecture Rules](internal/architecture-rules.md)
 - [Release Audit](internal/release-audit.md)
@@ -37,4 +40,3 @@ explicit.
 - [Local Audit Log](audit.md)
 
 Capybara AI is licensed under the MIT License.
-

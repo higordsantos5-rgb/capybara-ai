@@ -1,12 +1,9 @@
 # Quickstart
 
-This guide takes you from a local Fake/Test agent to the shape of a real provider
-and MCP tool configuration.
+This quickstart moves from a local agent to the shape of a real provider and MCP
+tool setup. The first example runs entirely offline with the Fake/Test provider.
 
 ## 1. Install
-
-Capybara AI is preparing its first public package release. The intended install
-command is:
 
 ```bash
 pip install capybara-ai
@@ -34,9 +31,10 @@ print(result.output)
 print(result.metadata.to_dict())
 ```
 
-The Fake/Test provider never calls an external service.
+The Fake/Test provider never calls an external service, so it is useful for
+learning, tests, and CI.
 
-## 3. Configure A Real Provider Shape
+## 3. Configure A Real Provider
 
 ```python
 import os
@@ -67,8 +65,8 @@ runner = AgentRunner(project_config=config, router=Router(create_default_registr
 agent = Agent(AgentConfig(name="assistant"))
 ```
 
-The provider exists in the framework, but it only becomes usable when your
-project enables it and supplies credentials.
+Provider support, project configuration, and runtime credentials are separate.
+Your project decides which providers and models are eligible.
 
 ## 4. Let Capabilities Drive Routing
 
@@ -86,9 +84,9 @@ result = agent.run(
 ```
 
 Structured output adds the `structured_output` capability to the request. The
-router will only select a model that declares it.
+router selects only a configured model that declares the capability.
 
-## 5. Add An MCP Tool With Allowlist
+## 5. Add An MCP Tool With An Allowlist
 
 ```python
 from capybara_ai.core.metadata import ExecutionMetadata
@@ -129,5 +127,4 @@ result = client.execute(
 )
 ```
 
-The trace in `metadata` records the tool name, server, and permissions used.
-
+Execution metadata records the tool name, server, and permissions used.

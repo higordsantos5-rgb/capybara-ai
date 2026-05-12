@@ -1,6 +1,7 @@
 # First Agent
 
-Use the Fake/Test provider to learn the framework without credentials.
+Start with the Fake/Test provider when you want to learn the API without
+credentials or network calls.
 
 ```python
 from capybara_ai.agents import Agent, AgentConfig
@@ -21,5 +22,4 @@ print(result.metadata.model_selected)
 ```
 
 The runner validates the request, selects `fake/fake-text`, executes the local
-adapter, and returns structured metadata.
-
+adapter, and returns structured metadata that your application can inspect.

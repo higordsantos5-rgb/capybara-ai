@@ -1,0 +1,13 @@
+{
+  "name": "capybara-ai",
+  "private": true,
+  "scripts": {
+    "lint": "npm --prefix site run lint",
+    "build": "npm --prefix site run build"
+  },
+  "dependencies": {
+    "next": "^16.2.6",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  }
+}

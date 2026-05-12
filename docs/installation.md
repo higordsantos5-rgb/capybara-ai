@@ -1,13 +1,24 @@
 # Installation
 
-The intended public installation command is:
+Install Capybara AI from PyPI:
 
 ```bash
 pip install capybara-ai
 ```
 
-Capybara AI is preparing its first public package release. Until the package is
-available on PyPI, install from source:
+Optional provider integrations are available as extras:
+
+```bash
+pip install "capybara-ai[openai]"
+pip install "capybara-ai[mcp]"
+```
+
+Python 3.11+ is required.
+
+## Development Install
+
+Use a local editable install when contributing or running the repository from
+source:
 
 ```bash
 git clone https://github.com/higordsantos5-rgb/capybara-ai.git
@@ -17,14 +28,5 @@ python -m venv .venv
 pip install -e ".[dev]"
 ```
 
-Optional extras:
-
-```bash
-pip install "capybara-ai[openai]"
-pip install "capybara-ai[mcp]"
-```
-
-Python 3.11+ is required. Poetry and uv are not required.
-
-Use `.env.example` as a template. Do not commit a real `.env`.
-
+For development, copy `.env.example` to your own `.env` file and fill in
+project-owned credentials. Keep real `.env` files out of version control.

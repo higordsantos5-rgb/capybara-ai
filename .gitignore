@@ -1,5 +1,6 @@
 .venv/
 .env
+.vercel/
 *.py[cod]
 __pycache__/
 .pytest_cache/
@@ -10,4 +11,10 @@ build/
 dist/
 .coverage
 htmlcov/
+node_modules/
+.next/
+site/node_modules/
+site/.next/
+site/out/
 
+.vercel
